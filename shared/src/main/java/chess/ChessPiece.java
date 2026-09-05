@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Represents a single chess piece
@@ -16,6 +17,28 @@ public class ChessPiece {
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.color = pieceColor;
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessPiece that = (ChessPiece) o;
+        return color == that.color && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, type);
+    }
+
+    @Override
+    public String toString() {
+        return "ChessPiece{" +
+                "color=" + color +
+                ", type=" + type +
+                '}';
     }
 
     /**
@@ -42,6 +65,22 @@ public class ChessPiece {
      */
     public PieceType getPieceType() {
         throw new RuntimeException("Not implemented");
+    }
+
+    /**
+     * @return FEN name for piece
+     */
+    public String getFenName() {
+        String letter = switch(type) {
+            case PieceType.PAWN -> "p";
+            case PieceType.ROOK -> "r";
+            case PieceType.KNIGHT -> "n";
+            case PieceType.BISHOP -> "b";
+            case PieceType.QUEEN -> "q";
+            case PieceType.KING -> "k";
+        };
+        if (color==ChessGame.TeamColor.WHITE) {letter=letter.toUpperCase();}
+        return letter;
     }
 
     /**
