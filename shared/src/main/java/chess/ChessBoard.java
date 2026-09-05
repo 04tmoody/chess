@@ -1,6 +1,6 @@
 package chess;
 
-import java.util.Locale;
+import java.util.Arrays;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -43,6 +43,11 @@ public class ChessBoard {
      * "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
      */
     private void setBoardToFen(String fen) {
+        // First Clear the Board
+        for (ChessPiece[] row : board) {
+            Arrays.fill(row, null);
+        }
+
         String piecesData = fen.split(" ")[0]; //Gets just the piece setup portion
 
         // Start adding pieces from the top left
@@ -89,6 +94,6 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
-        throw new RuntimeException("Not implemented");
+        setBoardToFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Standard Opening
     }
 }
