@@ -180,11 +180,15 @@ public class ChessMoveGenerator {
             dy = 1;
         }
 
-        // Determine if Pawn is promoting
+        // Determine if Pawn is promoting or can doublemove
         boolean promotion = (row+dy==1 || row+dy==8);
+        boolean doubleMove = ((row==2 || row==7) && board.getPiece(new ChessPosition(row+dy,col))==null);
 
         // Move forward without capturing
         addMoveFull(moves,piece,board,new ChessPosition(row+dy,col), position,false, false,promotion);
+        if (doubleMove) {
+            addMoveFull(moves,piece,board,new ChessPosition(row+dy*2,col), position,false, false,promotion);
+        }
 
         // Move diagonally with capturing
         addMoveFull(moves,piece,board,new ChessPosition(row+dy,col-1), position,true, true,promotion);
