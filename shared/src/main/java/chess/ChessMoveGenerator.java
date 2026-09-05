@@ -2,7 +2,6 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
 /**
  * Provides methods for generating moves based on a chess piece's type
@@ -73,46 +72,77 @@ public class ChessMoveGenerator {
     /**
      * The following 6 methods return an array of moves based on a different kind of chess Piece
      */
+    // KING MOVES
     private static Collection<ChessMove> kingMoves(ChessPiece piece, ChessBoard board, ChessPosition position) {
         Collection<ChessMove> moves = new ArrayList<>();
         int row = position.getRow();
         int col = position.getColumn();
-
-        // Loop through the 8 positions around the king
-        for (int dx=-1; dx<=1; dx++) {
-            for (int dy=-1; dy<=1; dy++) {
-                if (dx==0 && dy==0) {continue;} // Skip the square the king is on
-                addMove(moves,piece,board,new ChessPosition(row+dx,col+dy), position);
-            }
-        }
+        addMove(moves,piece,board,new ChessPosition(row-1,col-1), position);
+        addMove(moves,piece,board,new ChessPosition(row-1,col), position);
+        addMove(moves,piece,board,new ChessPosition(row-1,col+1), position);
+        addMove(moves,piece,board,new ChessPosition(row,col-1), position);
+        addMove(moves,piece,board,new ChessPosition(row,col+1), position);
+        addMove(moves,piece,board,new ChessPosition(row+1,col-1), position);
+        addMove(moves,piece,board,new ChessPosition(row+1,col), position);
+        addMove(moves,piece,board,new ChessPosition(row+1,col+1), position);
         return moves;
     }
 
+    // KNIGHT MOVES
     private static Collection<ChessMove> knightMoves(ChessPiece piece, ChessBoard board, ChessPosition position) {
         Collection<ChessMove> moves = new ArrayList<>();
         int row = position.getRow();
         int col = position.getColumn();
-
-        // Loop through the 8 positions an "L" shape away from the Knight
-        for (int dx=-1; dx<=1; dx+=2) {
-            for (int dy=-1; dy<=1; dy+=2) {
-                addMove(moves,piece,board,new ChessPosition(row+dx,col+dy*2), position);
-                addMove(moves,piece,board,new ChessPosition(row+dx*2,col+dy), position);
-            }
-        }
+        addMove(moves,piece,board,new ChessPosition(row-2,col-1), position);
+        addMove(moves,piece,board,new ChessPosition(row-2,col+1), position);
+        addMove(moves,piece,board,new ChessPosition(row-1,col-2), position);
+        addMove(moves,piece,board,new ChessPosition(row-1,col+2), position);
+        addMove(moves,piece,board,new ChessPosition(row+1,col-2), position);
+        addMove(moves,piece,board,new ChessPosition(row+1,col+2), position);
+        addMove(moves,piece,board,new ChessPosition(row+2,col-1), position);
+        addMove(moves,piece,board,new ChessPosition(row+2,col+1), position);
         return moves;
     }
 
+    // ROOK MOVES
     private static Collection<ChessMove> rookMoves(ChessPiece piece, ChessBoard board, ChessPosition position) {
         Collection<ChessMove> moves = new ArrayList<>();
-        int row = position.getRow();
-        int col = position.getColumn();
 
         // Add moves for the 4 directions a rook can move
         addSlideMove(moves,piece,board,-1,0,position);
         addSlideMove(moves,piece,board,1,0,position);
         addSlideMove(moves,piece,board,0,-1,position);
         addSlideMove(moves,piece,board,0,1,position);
+
+        return moves;
+    }
+
+    // BISHOP MOVES
+    private static Collection<ChessMove> bishopMoves(ChessPiece piece, ChessBoard board, ChessPosition position) {
+        Collection<ChessMove> moves = new ArrayList<>();
+
+        // Add moves for the 4 directions a rook can move
+        addSlideMove(moves,piece,board,-1,-1,position);
+        addSlideMove(moves,piece,board,1,-1,position);
+        addSlideMove(moves,piece,board,-1,1,position);
+        addSlideMove(moves,piece,board,1,1,position);
+
+        return moves;
+    }
+
+    // QUEEN MOVES
+    private static Collection<ChessMove> queenMoves(ChessPiece piece, ChessBoard board, ChessPosition position) {
+        Collection<ChessMove> moves = new ArrayList<>();
+
+        // Add moves for the 8 directions the queen can move
+        addSlideMove(moves,piece,board,-1,0,position);
+        addSlideMove(moves,piece,board,1,0,position);
+        addSlideMove(moves,piece,board,0,-1,position);
+        addSlideMove(moves,piece,board,0,1,position);
+        addSlideMove(moves,piece,board,-1,-1,position);
+        addSlideMove(moves,piece,board,1,-1,position);
+        addSlideMove(moves,piece,board,-1,1,position);
+        addSlideMove(moves,piece,board,1,1,position);
 
         return moves;
     }
@@ -125,6 +155,8 @@ public class ChessMoveGenerator {
             case ChessPiece.PieceType.KING -> kingMoves(piece,board,position);
             case ChessPiece.PieceType.KNIGHT -> knightMoves(piece,board,position);
             case ChessPiece.PieceType.ROOK -> rookMoves(piece,board,position);
+            case ChessPiece.PieceType.BISHOP -> bishopMoves(piece,board,position);
+            case ChessPiece.PieceType.QUEEN -> queenMoves(piece,board,position);
             default -> new ArrayList<>();
         };
     }
