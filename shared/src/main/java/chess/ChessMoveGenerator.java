@@ -61,8 +61,8 @@ public class ChessMoveGenerator {
         // Loop through the 8 positions an "L" shape away from the Knight
         for (int dx=-1; dx<=1; dx+=2) {
             for (int dy=-1; dy<=1; dy+=2) {
-                addMove(moves,piece,board,new ChessPosition(row+dx*2,col+dy*3), position);
-                addMove(moves,piece,board,new ChessPosition(row+dx*3,col+dy*2), position);
+                addMove(moves,piece,board,new ChessPosition(row+dx*1,col+dy*2), position);
+                addMove(moves,piece,board,new ChessPosition(row+dx*2,col+dy*1), position);
             }
         }
         return moves;
