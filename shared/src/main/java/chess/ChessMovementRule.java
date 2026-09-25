@@ -24,7 +24,8 @@ public abstract class ChessMovementRule {
         addMoves(moves,piece,board,position,dx,dy,maxSteps,true,false,false);
     }
 
-    public void addMoves(Collection<ChessMove> moves, ChessPiece piece, ChessBoard board, ChessPosition position, int dx, int dy, int maxSteps, boolean canCapture, boolean mustCapture, boolean canPromote) {
+    public void addMoves(Collection<ChessMove> moves, ChessPiece piece, ChessBoard board, ChessPosition position,
+                         int dx, int dy, int maxSteps, boolean canCapture, boolean mustCapture, boolean canPromote) {
 
         ChessPiece.PieceType[] promotionPieces = new ChessPiece.PieceType[]{
                 ChessPiece.PieceType.KNIGHT,
