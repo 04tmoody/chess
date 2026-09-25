@@ -9,7 +9,7 @@ import java.util.Collection;
 public class ChessQueenRule extends ChessMovementRule {
 
     public Collection<ChessMove> pieceMoves(ChessPiece piece, ChessBoard board, ChessPosition position) {
-        ArrayList<ChessMove> moves = new ArrayList<ChessMove>();
+        ArrayList<ChessMove> moves = new ArrayList<>();
 
         addMoves(moves,piece,board,position,-1,-1,8);
         addMoves(moves,piece,board,position,-1,0,8);
