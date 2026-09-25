@@ -62,11 +62,12 @@ public class ChessGame {
         for (int i=moves.size()-1; i>=0; i--) {
             ChessBoard originalBoard = board.copy();
             ChessMove move = moves.get(i);
+            boolean removeMove = false;
 
             // Test to see if move puts player in check
             board.makeMove(move);
             if (isInCheck(piece.getTeamColor())) {
-                moves.remove(i);
+                removeMove = true;
             }
 
             // Check to see if player is castling
@@ -76,12 +77,14 @@ public class ChessGame {
             if (piece.getPieceType()==ChessPiece.PieceType.KING && abs(dx)>1) {
                 board.makeMove(new ChessMove(move.getStartPosition(),
                                 new ChessPosition(move.getStartPosition().getRow(),middleCol),null)); // Move to square in the middle of the castle
-                if (isInCheck(piece.getTeamColor())) {moves.remove(i);}
+                if (isInCheck(piece.getTeamColor())) {removeMove = true;}
                 board = originalBoard.copy();
-                if (isInCheck(piece.getTeamColor())) {moves.remove(i);}
+                if (isInCheck(piece.getTeamColor())) {removeMove = true;}
             }
 
             board = originalBoard.copy();
+
+            if (removeMove) {moves.remove(i);}
         }
         return moves;
     }

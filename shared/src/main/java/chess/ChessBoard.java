@@ -21,11 +21,11 @@ public class ChessBoard {
 
         // Setup Castling Rights
         canCastleQ = new HashMap<>();
-        canCastleQ.put(ChessGame.TeamColor.WHITE,true);
-        canCastleQ.put(ChessGame.TeamColor.BLACK,true);
+        setCanCastleQ(ChessGame.TeamColor.WHITE,true);
+        setCanCastleQ(ChessGame.TeamColor.BLACK,true);
         canCastleK = new HashMap<>();
-        canCastleK.put(ChessGame.TeamColor.WHITE,true);
-        canCastleK.put(ChessGame.TeamColor.BLACK,true);
+        setCanCastleK(ChessGame.TeamColor.WHITE,true);
+        setCanCastleK(ChessGame.TeamColor.BLACK,true);
     }
 
     /**
@@ -36,6 +36,14 @@ public class ChessBoard {
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
         board[position.getRow()-1][position.getColumn()-1] = piece;
+        // Remove Castling Rights If King in Wrong Spot
+        if (piece==null) {return;}
+        if (piece.getPieceType()==ChessPiece.PieceType.KING) {
+            if (position.getColumn()!=5 || (position.getRow()!=1 && position.getRow()!=8)) {
+                setCanCastleQ(piece.getTeamColor(),false);
+                setCanCastleK(piece.getTeamColor(),false);
+            }
+        }
     }
 
     /**
@@ -130,6 +138,10 @@ public class ChessBoard {
      */
     public void resetBoard() {
         setBoardToFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+        setCanCastleQ(ChessGame.TeamColor.WHITE,true);
+        setCanCastleQ(ChessGame.TeamColor.BLACK,true);
+        setCanCastleK(ChessGame.TeamColor.WHITE,true);
+        setCanCastleK(ChessGame.TeamColor.BLACK,true);
     }
 
     @Override
