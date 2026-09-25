@@ -120,19 +120,19 @@ public class ChessBoard {
             canCastleK.put(piece.getTeamColor(),false);
         }
 
-        // Update En Passant Square
-        enPassant = null;
+        // Check capturing En Passant Square
         int dy = move.getEndPosition().getRow()-move.getStartPosition().getRow();
         int enPassantCol = move.getEndPosition().getColumn();
         int enPassantRow = move.getStartPosition().getRow() + dy/2;
-        if (piece.getPieceType()==ChessPiece.PieceType.PAWN && abs(dy)>1) {
-            enPassant = new ChessPosition(enPassantRow,enPassantCol);
-        }
-
-        // Check capturing En Passant Square
         if (piece.getPieceType()==ChessPiece.PieceType.PAWN &&
                 move.getEndPosition().equals(enPassant)) {
-            removePiece(new ChessPosition(move.getStartPosition().getRow()-dy,enPassantCol));
+            removePiece(new ChessPosition(move.getStartPosition().getRow(),enPassantCol));
+        }
+
+        // Update En Passant Square
+        enPassant = null;
+        if (piece.getPieceType()==ChessPiece.PieceType.PAWN && abs(dy)>1) {
+            enPassant = new ChessPosition(enPassantRow,enPassantCol);
         }
     }
 

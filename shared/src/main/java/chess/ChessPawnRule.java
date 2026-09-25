@@ -27,6 +27,18 @@ public class ChessPawnRule extends ChessMovementRule {
         addMoves(moves,piece,board,position,dx,-1,1,true,true,true);
         addMoves(moves,piece,board,position,dx,1,1,true,true,true);
 
+        // Pawns can capture the En Passant square if in range
+        if (board.getEnPassant()!=null) {
+            if (board.getEnPassant().getRow() == position.getRow() + dx &&
+                    board.getEnPassant().getColumn() == position.getColumn() - 1) {
+                addMoves(moves, piece, board, position, dx, -1, 1);
+            }
+            if (board.getEnPassant().getRow() == position.getRow() + dx &&
+                    board.getEnPassant().getColumn() == position.getColumn() + 1) {
+                addMoves(moves, piece, board, position, dx, 1, 1);
+            }
+        }
+
         return moves;
     }
 }
