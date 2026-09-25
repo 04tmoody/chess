@@ -105,7 +105,9 @@ public class ChessBoard {
             int col = 1;
             for (ChessPiece piece : pieceRow) {
                 copyBoard.addPiece(new ChessPosition(row,col),piece);
+                col++;
             }
+            row++;
         }
         return copyBoard;
     }
@@ -121,7 +123,7 @@ public class ChessBoard {
                 }
                 boardString.append(letter);
                 if (j!=board[i].length-1) {
-                    boardString.append(" ");
+                    boardString.append("|");
                 }
             }
             boardString.append("\n");
