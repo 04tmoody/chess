@@ -19,6 +19,7 @@ public class ChessPiece {
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.color = pieceColor;
         this.type = type;
+        this.hasMoved = false;
         movementRule = switch (type) {
             case KING -> new ChessKingRule();
             case QUEEN -> new ChessQueenRule();

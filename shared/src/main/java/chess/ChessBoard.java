@@ -1,8 +1,6 @@
 package chess;
 
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -13,9 +11,19 @@ import java.util.Objects;
 public class ChessBoard {
 
     private final ChessPiece[][] board;
+    private Map<ChessGame.TeamColor, Boolean> canCastleQ;
+    private Map<ChessGame.TeamColor, Boolean> canCastleK;
 
     public ChessBoard() {
         board = new ChessPiece[8][8];
+
+        // Setup Castling Rights
+        canCastleQ = new HashMap<>();
+        canCastleQ.put(ChessGame.TeamColor.WHITE,true);
+        canCastleQ.put(ChessGame.TeamColor.BLACK,true);
+        canCastleK = new HashMap<>();
+        canCastleK.put(ChessGame.TeamColor.WHITE,true);
+        canCastleK.put(ChessGame.TeamColor.BLACK,true);
     }
 
     /**
@@ -74,6 +82,23 @@ public class ChessBoard {
         ChessPiece piece = getPiece(move.getStartPosition());
         addPiece(move.getEndPosition(),piece);
         removePiece(move.getStartPosition());
+
+        // Update Castling Rights
+        if (move.getStartPosition().equals(new ChessPosition(1,1)) ||
+                move.getStartPosition().equals(new ChessPosition(8,1))) {
+            canCastleQ.put(piece.getTeamColor(),false);
+        }
+        if (move.getStartPosition().equals(new ChessPosition(1,8)) ||
+                move.getStartPosition().equals(new ChessPosition(8,8))) {
+            canCastleK.put(piece.getTeamColor(),false);
+        }
+    }
+
+    public boolean canCastleQ(ChessGame.TeamColor teamColor) {
+        return canCastleQ.get(teamColor);
+    }
+    public boolean canCastleK(ChessGame.TeamColor teamColor) {
+        return canCastleK.get(teamColor);
     }
 
     /**

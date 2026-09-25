@@ -20,6 +20,14 @@ public class ChessKingRule extends ChessMovementRule {
         addMoves(moves,piece,board,position,1,0,1);
         addMoves(moves,piece,board,position,1,1,1);
 
+        // Castling moves
+        if (board.canCastleQ(piece.getTeamColor())) {
+            addMoves(moves,piece,board,position,0,-2,1);
+        }
+        if (board.canCastleQ(piece.getTeamColor())) {
+            addMoves(moves,piece,board,position,0,2,1);
+        }
+
         return moves;
     }
 }
