@@ -92,6 +92,10 @@ public class ChessBoard {
                 move.getStartPosition().equals(new ChessPosition(8,8))) {
             canCastleK.put(piece.getTeamColor(),false);
         }
+        if (piece.getPieceType()==ChessPiece.PieceType.KING) {
+            canCastleQ.put(piece.getTeamColor(),false);
+            canCastleK.put(piece.getTeamColor(),false);
+        }
     }
 
     public boolean canCastleQ(ChessGame.TeamColor teamColor) {
