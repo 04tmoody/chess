@@ -15,6 +15,7 @@ public class ChessBoard {
     private final ChessPiece[][] board;
     private Map<ChessGame.TeamColor, Boolean> canCastleQ;
     private Map<ChessGame.TeamColor, Boolean> canCastleK;
+    private ChessPosition enPassant;
 
     public ChessBoard() {
         board = new ChessPiece[8][8];
@@ -26,6 +27,8 @@ public class ChessBoard {
         canCastleK = new HashMap<>();
         setCanCastleK(ChessGame.TeamColor.WHITE,true);
         setCanCastleK(ChessGame.TeamColor.BLACK,true);
+
+        enPassant = null;
     }
 
     /**
@@ -116,6 +119,15 @@ public class ChessBoard {
             canCastleQ.put(piece.getTeamColor(),false);
             canCastleK.put(piece.getTeamColor(),false);
         }
+
+        // Update En Passant Square
+        enPassant = null;
+        int dy = move.getEndPosition().getRow()-move.getStartPosition().getRow();
+        int enPassantCol = move.getEndPosition().getColumn();
+        int enPassantRow = move.getStartPosition().getColumn() + dy/2;
+        if (piece.getPieceType()==ChessPiece.PieceType.PAWN && abs(dy)>1) {
+            enPassant = new ChessPosition(enPassantRow,enPassantCol);
+        }
     }
 
     public boolean canCastleQ(ChessGame.TeamColor teamColor) {
@@ -130,6 +142,13 @@ public class ChessBoard {
     }
     public void setCanCastleK(ChessGame.TeamColor teamColor, boolean canCastle) {
         canCastleK.put(teamColor,canCastle);
+    }
+
+    public ChessPosition getEnPassant() {
+        return enPassant;
+    }
+    public void setEnPassant(ChessPosition square) {
+        enPassant = square;
     }
 
     /**
@@ -173,6 +192,7 @@ public class ChessBoard {
         copyBoard.setCanCastleQ(ChessGame.TeamColor.BLACK,canCastleQ.get(ChessGame.TeamColor.BLACK));
         copyBoard.setCanCastleK(ChessGame.TeamColor.WHITE,canCastleK.get(ChessGame.TeamColor.WHITE));
         copyBoard.setCanCastleK(ChessGame.TeamColor.BLACK,canCastleK.get(ChessGame.TeamColor.BLACK));
+        copyBoard.setEnPassant(getEnPassant());
         return copyBoard;
     }
 
