@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
+import static java.lang.Math.abs;
+
 /**
  * A class that can manage a chess game, making moves on a board
  * <p>
@@ -59,10 +61,26 @@ public class ChessGame {
         moves = (ArrayList<ChessMove>) piece.pieceMoves(board,startPosition);
         for (int i=moves.size()-1; i>=0; i--) {
             ChessBoard originalBoard = board.copy();
-            board.makeMove(moves.get(i));
+            ChessMove move = moves.get(i);
+
+            // Test to see if move puts player in check
+            board.makeMove(move);
             if (isInCheck(piece.getTeamColor())) {
                 moves.remove(i);
             }
+
+            // Check to see if player is castling
+            board = originalBoard.copy();
+            int dx = move.getEndPosition().getColumn() - move.getStartPosition().getColumn();
+            int middleCol = move.getEndPosition().getColumn() - dx/2; // Column of King between castling move
+            if (piece.getPieceType()==ChessPiece.PieceType.KING && abs(dx)>1) {
+                board.makeMove(new ChessMove(move.getStartPosition(),
+                                new ChessPosition(move.getStartPosition().getRow(),middleCol),null)); // Move to square in the middle of the castle
+                if (isInCheck(piece.getTeamColor())) {moves.remove(i);}
+                board = originalBoard.copy();
+                if (isInCheck(piece.getTeamColor())) {moves.remove(i);}
+            }
+
             board = originalBoard.copy();
         }
         return moves;
@@ -87,9 +105,13 @@ public class ChessGame {
         } else {
             throw new InvalidMoveException("Piece cannot move to square.");
         }
+
+        // Handle Promotion
         if (move.getPromotionPiece()!=null) {
             board.addPiece(move.getEndPosition(),new ChessPiece(turn,move.getPromotionPiece()));
         }
+
+        // Change Turns
         if (turn==TeamColor.WHITE) {
             turn=TeamColor.BLACK;
         } else {

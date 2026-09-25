@@ -2,6 +2,8 @@ package chess;
 
 import java.util.*;
 
+import static java.lang.Math.abs;
+
 /**
  * A chessboard that can hold and rearrange chess pieces.
  * <p>
@@ -83,6 +85,16 @@ public class ChessBoard {
         addPiece(move.getEndPosition(),piece);
         removePiece(move.getStartPosition());
 
+        // Move Rook if Castling
+        int dx = move.getEndPosition().getColumn()-move.getStartPosition().getColumn();
+        if (piece.getPieceType()==ChessPiece.PieceType.KING && abs(dx)>1) {
+            int oldRookCol = dx==2 ? 8 : 1; // Get col rook is on
+            int newRookCol = dx==2 ? 6 : 4; // Get col rook moves to
+            int row = move.getStartPosition().getRow();
+            removePiece(new ChessPosition(row,oldRookCol));
+            addPiece(new ChessPosition(row,newRookCol), new ChessPiece(piece.getTeamColor(),ChessPiece.PieceType.ROOK));
+        }
+
         // Update Castling Rights
         if (move.getStartPosition().equals(new ChessPosition(1,1)) ||
                 move.getStartPosition().equals(new ChessPosition(8,1))) {
@@ -103,6 +115,13 @@ public class ChessBoard {
     }
     public boolean canCastleK(ChessGame.TeamColor teamColor) {
         return canCastleK.get(teamColor);
+    }
+
+    public void setCanCastleQ(ChessGame.TeamColor teamColor, boolean canCastle) {
+        canCastleQ.put(teamColor,canCastle);
+    }
+    public void setCanCastleK(ChessGame.TeamColor teamColor, boolean canCastle) {
+        canCastleK.put(teamColor,canCastle);
     }
 
     /**
@@ -138,6 +157,10 @@ public class ChessBoard {
             }
             row++;
         }
+        copyBoard.setCanCastleQ(ChessGame.TeamColor.WHITE,canCastleQ.get(ChessGame.TeamColor.WHITE));
+        copyBoard.setCanCastleQ(ChessGame.TeamColor.BLACK,canCastleQ.get(ChessGame.TeamColor.BLACK));
+        copyBoard.setCanCastleK(ChessGame.TeamColor.WHITE,canCastleK.get(ChessGame.TeamColor.WHITE));
+        copyBoard.setCanCastleK(ChessGame.TeamColor.BLACK,canCastleK.get(ChessGame.TeamColor.BLACK));
         return copyBoard;
     }
 
