@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -39,10 +40,39 @@ public class ChessBoard {
     }
 
     /**
+     * Sets the board to a specified FEN string
+     */
+    public void setBoardToFen(String fen) {
+        for (int i = 1; i < 8; i++) {
+            String spaces = " ".repeat(i);
+            fen = fen.replace(String.valueOf(i), spaces);
+        }
+        fen = fen.split(" ")[0];
+        String[] fenRows = fen.split("/");
+        int row = 8;
+        for (String fenRow : fenRows) {
+            int col = 1;
+            for (String symbol : fenRow.split("")) {
+                ChessPiece piece;
+                if (symbol.equals(" ")) {
+                    piece = null;
+                } else {
+                    piece = ChessPiece.getPieceFromSymbol(symbol);
+                }
+                addPiece(new ChessPosition(row,col),piece);
+                col++;
+            }
+            row--;
+        }
+    }
+
+    /**
      * Sets the board to the default starting board
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
+        setBoardToFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+        /*
         this.addPiece(new ChessPosition(1,1),new ChessPiece(ChessGame.TeamColor.WHITE,ChessPiece.PieceType.ROOK));
         this.addPiece(new ChessPosition(1,2),new ChessPiece(ChessGame.TeamColor.WHITE,ChessPiece.PieceType.KNIGHT));
         this.addPiece(new ChessPosition(1,3),new ChessPiece(ChessGame.TeamColor.WHITE,ChessPiece.PieceType.BISHOP));
@@ -78,6 +108,7 @@ public class ChessBoard {
         this.addPiece(new ChessPosition(7,6),new ChessPiece(ChessGame.TeamColor.BLACK,ChessPiece.PieceType.PAWN));
         this.addPiece(new ChessPosition(7,7),new ChessPiece(ChessGame.TeamColor.BLACK,ChessPiece.PieceType.PAWN));
         this.addPiece(new ChessPosition(7,8),new ChessPiece(ChessGame.TeamColor.BLACK,ChessPiece.PieceType.PAWN));
+         */
     }
 
     @Override
@@ -92,5 +123,24 @@ public class ChessBoard {
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(board);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder boardString = new StringBuilder();
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                String letter = " ";
+                if (board[i][j]!=null) {
+                    letter = board[i][j].toString();
+                }
+                boardString.append(letter);
+                if (j!=board[i].length-1) {
+                    boardString.append(" ");
+                }
+            }
+            boardString.append("\n");
+        }
+        return boardString.toString();
     }
 }

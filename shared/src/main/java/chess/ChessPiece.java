@@ -29,6 +29,31 @@ public class ChessPiece {
         };
     }
 
+    public static ChessPiece getPieceFromSymbol(String symbol) {
+        ChessPiece.PieceType myType;
+        myType = null;
+        for (ChessPiece.PieceType t : ChessPiece.PieceType.values()) {
+            if (t.toString().substring(0,1).equals(symbol.toUpperCase(Locale.ROOT))) {
+                myType = t;
+            }
+            if (symbol.toUpperCase(Locale.ROOT).equals("N")) {
+                myType = ChessPiece.PieceType.KNIGHT;
+            } else if (symbol.toUpperCase(Locale.ROOT).equals("K")) {
+                myType = ChessPiece.PieceType.KING;
+            }
+        }
+        ChessGame.TeamColor myColor;
+        if (symbol.toUpperCase(Locale.ROOT).equals(symbol)) {
+            myColor = ChessGame.TeamColor.WHITE;
+        } else {
+            myColor = ChessGame.TeamColor.BLACK;
+        }
+        if (myType!=null) {
+            return new ChessPiece(myColor,myType);
+        }
+        return null;
+    }
+
     /**
      * The various different chess piece options
      */
