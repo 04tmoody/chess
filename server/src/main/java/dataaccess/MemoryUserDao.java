@@ -10,11 +10,11 @@ public class MemoryUserDao implements UserDao {
 
     public void clear() {
         users.clear();
-    };
+    }
     public void createUser(UserData user) {
         users.put(user.username(),user);
-    };
+    }
     public UserData getUser(String username) {
         return users.get(username);
-    };
+    }
 }
