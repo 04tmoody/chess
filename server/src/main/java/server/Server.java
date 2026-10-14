@@ -14,7 +14,7 @@ public class Server {
 
     private final AuthService authService = new AuthService();
     private final UserService userService = new UserService(authService);
-    private final GameService gameService = new GameService();
+    private final GameService gameService = new GameService(authService);
     private final Javalin javalin;
 
     public Server() {
@@ -25,6 +25,7 @@ public class Server {
         javalin.post("/user", this::register);
         javalin.post("/session", this::login);
         javalin.delete("/session",this::logout);
+        javalin.get("/game",this::listGames);
     }
 
     private void clear(Context ctx) {
@@ -74,6 +75,18 @@ public class Server {
             authService.logout(auth);
             ctx.status(200);
             ctx.result(new Gson().toJson(new Object()));
+        } catch (UnauthorizedException e) {
+            ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        }
+    }
+
+    private void listGames(Context ctx) {
+        String auth = ctx.header("Authorization");
+        try {
+            ListGamesResult result = gameService.listGames(auth);
+            ctx.status(200);
+            ctx.result(new Gson().toJson(result));
         } catch (UnauthorizedException e) {
             ctx.status(401);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));

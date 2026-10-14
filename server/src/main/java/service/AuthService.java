@@ -22,4 +22,8 @@ public class AuthService {
         }
         authDao.deleteAuth(auth);
     }
+
+    public boolean authorized(String auth) {
+        return authDao.getAuth(auth)!=null;
+    }
 }
