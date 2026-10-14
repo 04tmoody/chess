@@ -19,13 +19,13 @@ public class MemoryGameDao implements GameDao {
         return newGame;
     }
     public GameData getGame(int gameID) {
-        return games.get(gameID);
+        return games.get(gameID-1);
     }
     public List<GameData> listGames() {
         return games;
     }
     public void updateGame(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) {
         GameData newGame = new GameData(gameID, whiteUsername, blackUsername, gameName, game);
-        games.set(gameID,newGame);
+        games.set(gameID-1,newGame);
     }
 }

@@ -26,4 +26,8 @@ public class AuthService {
     public boolean authorized(String auth) {
         return authDao.getAuth(auth)!=null;
     }
+
+    public String username(String auth) {
+        return authDao.getAuth(auth).username();
+    }
 }

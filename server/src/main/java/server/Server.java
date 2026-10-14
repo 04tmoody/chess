@@ -27,6 +27,7 @@ public class Server {
         javalin.delete("/session",this::logout);
         javalin.get("/game",this::listGames);
         javalin.post("/game",this::createGame);
+        javalin.put("/game",this::joinGame);
     }
 
     private void clear(Context ctx) {
@@ -103,6 +104,25 @@ public class Server {
             ctx.result(new Gson().toJson(result));
         } catch (UnauthorizedException e) {
             ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        } catch (Exception e) {
+            ctx.status(400);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        }
+    }
+
+    private void joinGame(Context ctx) {
+        JoinGameRequest req = new Gson().fromJson(ctx.body(), JoinGameRequest.class);
+        String auth = ctx.header("Authorization");
+        try {
+            gameService.joinGame(req,auth);
+            ctx.status(200);
+            ctx.result(new Gson().toJson(new Object()));
+        } catch (UnauthorizedException e) {
+            ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        } catch (AlreadyTakenException e) {
+            ctx.status(403);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
         } catch (Exception e) {
             ctx.status(400);
