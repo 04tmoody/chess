@@ -8,7 +8,7 @@ import java.util.List;
 public interface GameDao {
     void clear();
     GameData createGame(String whiteUsername, String blackUsername, String gameName, ChessGame game);
-    GameData getGame(int GameID);
+    GameData getGame(int gameID);
     List<GameData> listGames();
-    void updateGame(int GameID, String whiteUsername, String blackUsername, String gameName, ChessGame game);
+    void updateGame(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game);
 }

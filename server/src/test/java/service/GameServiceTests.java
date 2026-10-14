@@ -29,28 +29,28 @@ public class GameServiceTests {
 
     @Test
     @DisplayName("Create Game - Positive Case")
-    void CreateGameSuccess() {
+    void createGameSuccess() {
         CreateGameRequest req = new CreateGameRequest("Legendary Battle");
         assertDoesNotThrow(() -> service.createGame(req,auth));
     }
 
     @Test
     @DisplayName("Create Game - Negative Case (null gameName)")
-    void CreateGameNull() {
+    void createGameNull() {
         CreateGameRequest req = new CreateGameRequest(null);
         assertThrows(Exception.class, () -> service.createGame(req,auth));
     }
 
     @Test
     @DisplayName("Create Game - Negative Case (unauthorized)")
-    void CreateGameUnauthorized() {
+    void createGameUnauthorized() {
         CreateGameRequest req = new CreateGameRequest("Gary's Game");
         assertThrows(UnauthorizedException.class, () -> service.createGame(req,"fake"));
     }
 
     @Test
     @DisplayName("List Games - Positive Case")
-    void ListGamesSuccess() {
+    void listGamesSuccess() {
         CreateGameRequest req = new CreateGameRequest("Gary's Game");
         assertDoesNotThrow(() -> service.createGame(req,auth));
 
@@ -69,13 +69,13 @@ public class GameServiceTests {
 
     @Test
     @DisplayName("List Games - Negative Case (Unauthorized)")
-    void ListGamesUnauthorized() {
+    void listGamesUnauthorized() {
         assertThrows(UnauthorizedException.class, () -> service.listGames("hacker"));
     }
 
     @Test
     @DisplayName("Join Game - Positive Case")
-    void JoinGameSuccess() {
+    void joinGameSuccess() {
         CreateGameRequest req = new CreateGameRequest("Gary's Game");
         int gameID = assertDoesNotThrow(() -> service.createGame(req,auth)).gameID();
         JoinGameRequest req2 = new JoinGameRequest("WHITE",gameID);
@@ -86,14 +86,14 @@ public class GameServiceTests {
 
     @Test
     @DisplayName("Join Game - Negative Case (invalid gameID)")
-    void JoinGameBadID() {
+    void joinGameBadID() {
         JoinGameRequest req = new JoinGameRequest("WHITE",-1);
         assertThrows(Exception.class, () -> service.joinGame(req,auth));
     }
 
     @Test
     @DisplayName("Join Game - Negative Case (Unauthorized)")
-    void JoinGameUnauthorized() {
+    void joinGameUnauthorized() {
         CreateGameRequest req = new CreateGameRequest("Gary's Game");
         int gameID = assertDoesNotThrow(() -> service.createGame(req,auth)).gameID();
         JoinGameRequest req2 = new JoinGameRequest("WHITE",gameID);
@@ -102,7 +102,7 @@ public class GameServiceTests {
 
     @Test
     @DisplayName("Join Game - Negative Case (Game Already Taken)")
-    void JoinGameDuplicate() {
+    void joinGameDuplicate() {
         CreateGameRequest req = new CreateGameRequest("Gary's Game");
         int gameID = assertDoesNotThrow(() -> service.createGame(req,auth)).gameID();
         JoinGameRequest req2 = new JoinGameRequest("WHITE",gameID);
