@@ -26,6 +26,7 @@ public class Server {
         javalin.post("/session", this::login);
         javalin.delete("/session",this::logout);
         javalin.get("/game",this::listGames);
+        javalin.post("/game",this::createGame);
     }
 
     private void clear(Context ctx) {
@@ -89,6 +90,22 @@ public class Server {
             ctx.result(new Gson().toJson(result));
         } catch (UnauthorizedException e) {
             ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        }
+    }
+
+    private void createGame(Context ctx) {
+        CreateGameRequest req = new Gson().fromJson(ctx.body(), CreateGameRequest.class);
+        String auth = ctx.header("Authorization");
+        try {
+            CreateGameResult result = gameService.createGame(req,auth);
+            ctx.status(200);
+            ctx.result(new Gson().toJson(result));
+        } catch (UnauthorizedException e) {
+            ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        } catch (Exception e) {
+            ctx.status(400);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
         }
     }

@@ -12,10 +12,11 @@ public class MemoryGameDao implements GameDao {
     public void clear() {
         games.clear();
     }
-    public void createGame(String whiteUsername, String blackUsername, String gameName, ChessGame game) {
-        int newID = games.size();
+    public GameData createGame(String whiteUsername, String blackUsername, String gameName, ChessGame game) {
+        int newID = games.size() + 1;
         GameData newGame = new GameData(newID, whiteUsername, blackUsername, gameName, game);
         games.add(newGame);
+        return newGame;
     }
     public GameData getGame(int gameID) {
         return games.get(gameID);
