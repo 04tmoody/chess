@@ -14,4 +14,12 @@ public class AuthService {
     public AuthData login(String username) {
         return authDao.createAuth(username);
     }
+
+    public void logout(String auth) throws UnauthorizedException {
+        AuthData authData = authDao.getAuth(auth);
+        if (authData==null) {
+            throw new UnauthorizedException("Error: unauthorized");
+        }
+        authDao.deleteAuth(auth);
+    }
 }

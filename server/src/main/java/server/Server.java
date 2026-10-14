@@ -71,9 +71,12 @@ public class Server {
     private void logout(Context ctx) {
         String auth = ctx.header("Authorization");
         try {
-            userService.logout(auth);
-        } catch (Exception e) {
-
+            authService.logout(auth);
+            ctx.status(200);
+            ctx.result(new Gson().toJson(new Object()));
+        } catch (UnauthorizedException e) {
+            ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
         }
     }
 

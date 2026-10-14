@@ -47,8 +47,4 @@ public class UserService {
         AuthData auth = authService.login(user.username());
         return new LoginResult(user.username(),auth.authToken());
     }
-
-    public void logout(String auth) {
-
-    }
 }
