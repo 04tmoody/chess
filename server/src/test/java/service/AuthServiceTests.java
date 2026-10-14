@@ -1,10 +1,7 @@
 package service;
 
-import model.AuthData;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
 
 public class AuthServiceTests {
     private AuthService service;
@@ -19,6 +16,6 @@ public class AuthServiceTests {
     @DisplayName("Register - Positive Case")
     void registerSuccess() {
         String username = "bob";
-        Assertions.assertDoesNotThrow(() -> service.register(username));
+        assertDoesNotThrow(() -> service.login(username));
     }
 }

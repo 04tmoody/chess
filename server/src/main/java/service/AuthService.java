@@ -11,7 +11,7 @@ public class AuthService {
         authDao.clear();
     }
 
-    public AuthData register(String username) {
+    public AuthData login(String username) {
         return authDao.createAuth(username);
     }
 }

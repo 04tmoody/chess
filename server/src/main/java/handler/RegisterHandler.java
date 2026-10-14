@@ -31,7 +31,7 @@ public class RegisterHandler {
             }
 
             user = userService.register(user);
-            AuthData auth = authService.register(user.username());
+            AuthData auth = authService.login(user.username());
             var response = Map.of(
                     "username", user.username(),
                     "authToken", auth.authToken()

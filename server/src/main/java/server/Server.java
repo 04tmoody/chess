@@ -14,13 +14,15 @@ public class Server {
         UserService userService = new UserService();
         AuthService authService = new AuthService();
         GameService gameService = new GameService();
-        RegisterHandler registerHandler = new RegisterHandler(userService, authService);
-        ClearHandler clearHandler = new ClearHandler(userService, authService, gameService);
 
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
-        javalin.delete("/db", clearHandler::handle);
-        javalin.post("/user", registerHandler::handle);
+        javalin.delete("/db",
+                new ClearHandler(userService, authService, gameService)::handle);
+        javalin.post("/user",
+                new RegisterHandler(userService, authService)::handle);
+        javalin.post("/session",
+                new LoginHandler(userService, authService, gameService)::handle);
     }
 
     public int run(int desiredPort) {
