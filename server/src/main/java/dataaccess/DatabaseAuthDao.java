@@ -24,7 +24,7 @@ public class DatabaseAuthDao implements AuthDao {
     public AuthData createAuth(String username) throws DataAccessException {
         String authToken = UUID.randomUUID().toString();
         AuthData newAuth = new AuthData(username, authToken);
-        var statement = "INSERT INTO auth (username, authtoken) VALUES(?, ?) ON DUPLICATE KEY UPDATE username=username;";
+        var statement = "INSERT INTO auth (username, authtoken) VALUES(?, ?)";
         try (var conn = DatabaseManager.getConnection()) {
             var preparedStatement = conn.prepareStatement(statement);
             preparedStatement.setString(1, username);

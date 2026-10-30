@@ -13,6 +13,8 @@ public class UserServiceTests {
     void setup() {
         AuthService authService = new AuthService();
         service = new UserService(authService);
+        assertDoesNotThrow(authService::clear);
+        assertDoesNotThrow(service::clear);
     }
 
     @Test

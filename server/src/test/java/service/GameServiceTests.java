@@ -19,12 +19,14 @@ public class GameServiceTests {
     @BeforeEach
     void setup() {
         AuthService authService = new AuthService();
+        assertDoesNotThrow(authService::clear);
         UserService userService = new UserService(authService);
         auth = assertDoesNotThrow(() -> userService.register(
                 new RegisterRequest("Test User","Password","email@email.com")
         ).authToken());
         service = new GameService(authService);
-        assertDoesNotThrow(() -> service.clear());
+        assertDoesNotThrow(userService::clear);
+        assertDoesNotThrow(service::clear);
     }
 
     @Test

@@ -40,7 +40,7 @@ public class DatabaseManager {
                 "CREATE TABLE IF NOT EXISTS auth (" +
                         "username VARCHAR(255), " +
                         "authtoken VARCHAR(255), " +
-                        "PRIMARY KEY (username))",
+                        "PRIMARY KEY (authtoken))",
 
                 "CREATE TABLE IF NOT EXISTS games (" +
                         "gameID INT AUTO_INCREMENT, " +

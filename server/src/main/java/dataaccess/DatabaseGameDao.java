@@ -78,7 +78,7 @@ public class DatabaseGameDao implements GameDao {
         }
     }
     public void updateGame(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) throws DataAccessException {
-        var statement = "UPDATE games SET whiteUsername = ?, blackUsername = ?, gameName = ?, game = ?, WHERE gameID = ?";
+        var statement = "UPDATE games SET whiteUsername = ?, blackUsername = ?, gameName = ?, game = ? WHERE gameID = ?";
         try (var conn = DatabaseManager.getConnection()) {
             var preparedStatement = conn.prepareStatement(statement);
             preparedStatement.setString(1, whiteUsername);
