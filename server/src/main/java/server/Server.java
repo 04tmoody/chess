@@ -41,11 +41,16 @@ public class Server {
     }
 
     private void clear(Context ctx) throws DataAccessException {
-        userService.clear();
-        authService.clear();
-        gameService.clear();
-        ctx.status(200);
-        ctx.result(new Gson().toJson(new Object()));
+        try {
+            userService.clear();
+            authService.clear();
+            gameService.clear();
+            ctx.status(200);
+            ctx.result(new Gson().toJson(new Object()));
+        } catch (DataAccessException e) {
+            ctx.status(500);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        }
     }
 
     private void register(Context ctx) throws Exception {
