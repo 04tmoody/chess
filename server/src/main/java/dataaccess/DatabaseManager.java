@@ -43,7 +43,7 @@ public class DatabaseManager {
                         "PRIMARY KEY (username))",
 
                 "CREATE TABLE IF NOT EXISTS games (" +
-                        "gameID INT, " +
+                        "gameID INT AUTO_INCREMENT, " +
                         "whiteUsername VARCHAR(255), " +
                         "blackUsername VARCHAR(255), " +
                         "gameName VARCHAR(255), " +

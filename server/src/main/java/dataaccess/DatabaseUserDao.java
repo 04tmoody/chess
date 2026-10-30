@@ -39,7 +39,7 @@ public class DatabaseUserDao implements UserDao {
             var email = rs.getString("email");
             return new UserData(username,password,email);
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to create user", ex);
+            throw new DataAccessException("failed to get user", ex);
         }
     };
 }
