@@ -24,7 +24,7 @@ public class GameServiceTests {
                 new RegisterRequest("Test User","Password","email@email.com")
         ).authToken());
         service = new GameService(authService);
-        service.clear();
+        assertDoesNotThrow(() -> service.clear());
     }
 
     @Test

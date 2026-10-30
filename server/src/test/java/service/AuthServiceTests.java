@@ -11,7 +11,7 @@ public class AuthServiceTests {
     @BeforeEach
     void setup() {
         service = new AuthService();
-        service.clear();
+        assertDoesNotThrow(() -> service.clear());
     }
 
     @Test
