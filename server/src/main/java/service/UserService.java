@@ -8,6 +8,7 @@ import model.AuthData;
 import model.UserData;
 import model.request.*;
 import model.result.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Map;
 
@@ -31,7 +32,8 @@ public class UserService {
         if (existingUser!=null) {
             throw new AlreadyTakenException("Error: already taken");
         }
-        userDao.createUser(new UserData(req.username(),req.password(),req.email()));
+        String hashedPassword = BCrypt.hashpw(req.password(), BCrypt.gensalt());
+        userDao.createUser(new UserData(req.username(),hashedPassword,req.email()));
         AuthData auth = authService.login(req.username());
         return new RegisterResult(req.username(), auth.authToken());
     }
@@ -41,7 +43,7 @@ public class UserService {
             throw new Exception("Error: bad request");
         }
         UserData user = userDao.getUser(req.username());
-        if (user==null || !user.password().equals(req.password())) {
+        if (user==null || !BCrypt.checkpw(req.password(), user.password())) {
             throw new UnauthorizedException("Error: unauthorized");
         }
         AuthData auth = authService.login(user.username());
