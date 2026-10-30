@@ -6,6 +6,7 @@ import model.GameData;
 import model.UserData;
 
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +24,16 @@ public class DatabaseGameDao implements GameDao {
     public GameData createGame(String whiteUsername, String blackUsername, String gameName, ChessGame game) throws DataAccessException {
         var statement = "INSERT INTO games (whiteUsername, blackUsername, gameName, game) VALUES(?, ?, ?, ?)";
         try (var conn = DatabaseManager.getConnection()) {
-            var preparedStatement = conn.prepareStatement(statement);
+            var preparedStatement = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, whiteUsername);
             preparedStatement.setString(2, blackUsername);
             preparedStatement.setString(3, gameName);
             String gameString = new Gson().toJson(game);
             preparedStatement.setString(4, gameString);
             preparedStatement.executeUpdate();
-            int generatedId = preparedStatement.getGeneratedKeys().getInt(1);
+            var generatedKeys = preparedStatement.getGeneratedKeys();
+            generatedKeys.next();
+            int generatedId = generatedKeys.getInt(1);
             return getGame(generatedId);
         } catch (SQLException ex) {
             throw new DataAccessException("failed to create game", ex);
@@ -86,7 +89,7 @@ public class DatabaseGameDao implements GameDao {
             preparedStatement.setInt(5,gameID);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to create game", ex);
+            throw new DataAccessException("failed to update game", ex);
         }
     }
 }

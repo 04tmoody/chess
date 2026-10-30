@@ -24,7 +24,7 @@ public class DatabaseAuthDao implements AuthDao {
     public AuthData createAuth(String username) throws DataAccessException {
         String authToken = UUID.randomUUID().toString();
         AuthData newAuth = new AuthData(username, authToken);
-        var statement = "INSERT INTO auth (username, authtoken) VALUES(?, ?)";
+        var statement = "INSERT INTO auth (username, authtoken) VALUES(?, ?) ON DUPLICATE KEY UPDATE username=username;";
         try (var conn = DatabaseManager.getConnection()) {
             var preparedStatement = conn.prepareStatement(statement);
             preparedStatement.setString(1, username);
@@ -41,9 +41,12 @@ public class DatabaseAuthDao implements AuthDao {
             var preparedStatement = conn.prepareStatement(statement);
             preparedStatement.setString(1, authToken);
             var rs = preparedStatement.executeQuery();
-            rs.next();
-            var username = rs.getString("username");
-            return new AuthData(username,authToken);
+            if (rs.next()) {
+                var username = rs.getString("username");
+                return new AuthData(username, authToken);
+            } else {
+                return null;
+            }
         } catch (SQLException ex) {
             throw new DataAccessException("failed to get auth", ex);
         }
@@ -53,9 +56,9 @@ public class DatabaseAuthDao implements AuthDao {
         try (var conn = DatabaseManager.getConnection()) {
             var preparedStatement = conn.prepareStatement(statement);
             preparedStatement.setString(1, authToken);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to get auth", ex);
+            throw new DataAccessException("failed to delete auth", ex);
         }
     }
 }

@@ -14,7 +14,7 @@ public class ChessPiece {
 
     final private ChessGame.TeamColor color;
     final private ChessPiece.PieceType type;
-    final private ChessMovementRule movementRule;
+    final transient private ChessMovementRule movementRule;
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.color = pieceColor;
