@@ -1,9 +1,11 @@
-package dataaccess;
+package dataaccess.sql;
 
 import chess.ChessGame;
 import com.google.gson.Gson;
+import dataaccess.DataAccessException;
+import dataaccess.DatabaseManager;
+import dataaccess.GameDao;
 import model.GameData;
-import model.UserData;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,17 +14,16 @@ import java.util.List;
 
 public class DatabaseGameDao implements GameDao {
 
-    public void clear() throws DataAccessException{
+    public void clear() throws DataAccessException {
         var statement = "DELETE FROM games";
         try (var conn = DatabaseManager.getConnection()) {
             var preparedStatement = conn.prepareStatement(statement);
             preparedStatement.executeUpdate();
-        } catch (SQLException ex) {
-            throw new DataAccessException("Error: failed to clear games", ex);
-        }
+        } catch (SQLException ex) {throw new DataAccessException("Error: failed to clear games", ex);}
     }
     public GameData createGame(String whiteUsername, String blackUsername, String gameName, ChessGame game) throws DataAccessException {
-        var statement = "INSERT INTO games (whiteUsername, blackUsername, gameName, game) VALUES(?, ?, ?, ?)";
+        var statement = "INSERT INTO games (whiteUsername, blackUsername, gameName, game)" +
+                "VALUES(?, ?, ?, ?)";
         try (var conn = DatabaseManager.getConnection()) {
             var preparedStatement = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, whiteUsername);
@@ -34,10 +35,9 @@ public class DatabaseGameDao implements GameDao {
             var generatedKeys = preparedStatement.getGeneratedKeys();
             generatedKeys.next();
             int generatedId = generatedKeys.getInt(1);
-            return getGame(generatedId);
-        } catch (SQLException ex) {
-            throw new DataAccessException("Error: failed to create game", ex);
-        }
+            var gameData = getGame(generatedId);
+            return gameData;
+        } catch (SQLException ex) {throw new DataAccessException("Error: failed to create game", ex);}
     }
     public GameData getGame(int gameID) throws DataAccessException {
         var statement = "SELECT * FROM games WHERE gameID = ?";
@@ -45,16 +45,15 @@ public class DatabaseGameDao implements GameDao {
             var preparedStatement = conn.prepareStatement(statement);
             preparedStatement.setInt(1, gameID);
             var rs = preparedStatement.executeQuery();
-            rs.next();
-            var whiteUsername = rs.getString("whiteUsername");
-            var blackUsername = rs.getString("blackUsername");
-            var gameName = rs.getString("gameName");
-            var gameString = rs.getString("game");
-            var game = new Gson().fromJson(gameString, ChessGame.class);
-            return new GameData(gameID,whiteUsername,blackUsername,gameName,game);
-        } catch (SQLException ex) {
-            throw new DataAccessException("Error: failed to get game", ex);
-        }
+            if (rs.next()) {
+                var whiteUsername = rs.getString("whiteUsername");
+                var blackUsername = rs.getString("blackUsername");
+                var gameName = rs.getString("gameName");
+                var gameString = rs.getString("game");
+                var game = new Gson().fromJson(gameString, ChessGame.class);
+                return new GameData(gameID, whiteUsername, blackUsername, gameName, game);
+            } return null;
+        } catch (SQLException ex) {throw new DataAccessException("Error: failed to get game", ex);}
     }
     public List<GameData> listGames() throws DataAccessException {
         var statement = "SELECT * FROM games";
@@ -70,12 +69,11 @@ public class DatabaseGameDao implements GameDao {
                 var gameName = rs.getString("gameName");
                 var gameString = rs.getString("game");
                 var game = new Gson().fromJson(gameString, ChessGame.class);
-                games.add(new GameData(gameID,whiteUsername,blackUsername,gameName,game));
+                var gameData = new GameData(gameID,whiteUsername,blackUsername,gameName,game);
+                games.add(gameData);
             }
             return games;
-        } catch (SQLException ex) {
-            throw new DataAccessException("Error: failed to get list of games", ex);
-        }
+        } catch (SQLException ex) {throw new DataAccessException("Error: failed to get list of games", ex);}
     }
     public void updateGame(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) throws DataAccessException {
         var statement = "UPDATE games SET whiteUsername = ?, blackUsername = ?, gameName = ?, game = ? WHERE gameID = ?";
@@ -88,8 +86,6 @@ public class DatabaseGameDao implements GameDao {
             preparedStatement.setString(4, gameString);
             preparedStatement.setInt(5,gameID);
             preparedStatement.executeUpdate();
-        } catch (SQLException ex) {
-            throw new DataAccessException("Error: failed to update game", ex);
-        }
+        } catch (SQLException ex) {throw new DataAccessException("Error: failed to update game", ex);}
     }
 }

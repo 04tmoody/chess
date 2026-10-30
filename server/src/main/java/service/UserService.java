@@ -1,16 +1,13 @@
 package service;
 
-import com.google.gson.Gson;
 import dataaccess.DataAccessException;
-import dataaccess.DatabaseUserDao;
+import dataaccess.sql.DatabaseUserDao;
 import dataaccess.UserDao;
 import model.AuthData;
 import model.UserData;
 import model.request.*;
 import model.result.*;
 import org.mindrot.jbcrypt.BCrypt;
-
-import java.util.Map;
 
 public class UserService {
     private final UserDao userDao = new DatabaseUserDao();

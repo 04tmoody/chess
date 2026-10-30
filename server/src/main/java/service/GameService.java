@@ -3,7 +3,7 @@ package service;
 import chess.ChessGame;
 import dataaccess.DataAccessException;
 import dataaccess.GameDao;
-import dataaccess.DatabaseGameDao;
+import dataaccess.sql.DatabaseGameDao;
 import model.GameData;
 import model.request.CreateGameRequest;
 import model.request.JoinGameRequest;
