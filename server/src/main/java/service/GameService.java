@@ -1,6 +1,7 @@
 package service;
 
 import chess.ChessGame;
+import dataaccess.DataAccessException;
 import dataaccess.GameDao;
 import dataaccess.DatabaseGameDao;
 import model.GameData;
@@ -16,7 +17,7 @@ public class GameService {
         this.authService = authService;
     }
 
-    public ListGamesResult listGames(String auth) throws UnauthorizedException {
+    public ListGamesResult listGames(String auth) throws UnauthorizedException, DataAccessException {
         if (!authService.authorized(auth)) {
             throw new UnauthorizedException("Error: unauthorized");
         }
@@ -61,7 +62,7 @@ public class GameService {
         gameDao.updateGame(game.gameID(),whiteUsername,blackUsername,game.gameName(),game.game());
     }
 
-    public void clear() {
+    public void clear() throws DataAccessException {
         gameDao.clear();
     }
 }

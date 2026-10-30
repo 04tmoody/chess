@@ -1,15 +1,20 @@
 package dataaccess;
 
+import dataaccess.DatabaseManager;
 import model.UserData;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.sql.SQLException;
 
 public class DatabaseUserDao implements UserDao {
 
-    private final Map<String, UserData> users = new HashMap<>();
-
-    public void clear() {
-        //users.clear();
+    public void clear() throws DataAccessException {
+        var statement = "";
+        try (var conn = DatabaseManager.getConnection()) {
+            var preparedStatement = conn.prepareStatement(statement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DataAccessException("failed to clear user", ex);
+        }
     };
     public void createUser(UserData user) {
         //users.put(user.username(),user);

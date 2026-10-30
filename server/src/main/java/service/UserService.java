@@ -19,7 +19,7 @@ public class UserService {
          this.authService = authService;
     }
 
-    public void clear() {
+    public void clear() throws DataAccessException {
         userDao.clear();
     }
 

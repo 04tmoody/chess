@@ -57,6 +57,9 @@ public class Server {
         } catch (AlreadyTakenException e) {
             ctx.status(403);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        } catch (DataAccessException e) {
+            ctx.status(500);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
         } catch (Exception e) {
             ctx.status(400);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
@@ -75,6 +78,9 @@ public class Server {
         } catch (UnauthorizedException e) {
             ctx.status(401);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        } catch (DataAccessException e) {
+            ctx.status(500);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
         } catch (Exception e) {
             ctx.status(400);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
@@ -90,6 +96,9 @@ public class Server {
         } catch (UnauthorizedException e) {
             ctx.status(401);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        } catch (DataAccessException e) {
+            ctx.status(500);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
         }
     }
 
@@ -101,6 +110,9 @@ public class Server {
             ctx.result(new Gson().toJson(result));
         } catch (UnauthorizedException e) {
             ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        } catch (DataAccessException e) {
+            ctx.status(500);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
         }
     }
@@ -114,6 +126,9 @@ public class Server {
             ctx.result(new Gson().toJson(result));
         } catch (UnauthorizedException e) {
             ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        } catch (DataAccessException e) {
+            ctx.status(500);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
         } catch (Exception e) {
             ctx.status(400);
@@ -133,6 +148,9 @@ public class Server {
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
         } catch (AlreadyTakenException e) {
             ctx.status(403);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
+        } catch (DataAccessException e) {
+            ctx.status(500);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage())));
         } catch (Exception e) {
             ctx.status(400);
