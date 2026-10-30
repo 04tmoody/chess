@@ -18,7 +18,7 @@ public class DatabaseAuthDao implements AuthDao {
             var preparedStatement = conn.prepareStatement(statement);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to clear auth", ex);
+            throw new DataAccessException("Error: failed to clear auth", ex);
         }
     }
     public AuthData createAuth(String username) throws DataAccessException {
@@ -31,7 +31,7 @@ public class DatabaseAuthDao implements AuthDao {
             preparedStatement.setString(2, authToken);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to create auth", ex);
+            throw new DataAccessException("Error: failed to create auth", ex);
         }
         return newAuth;
     }
@@ -48,7 +48,7 @@ public class DatabaseAuthDao implements AuthDao {
                 return null;
             }
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to get auth", ex);
+            throw new DataAccessException("Error: failed to get auth", ex);
         }
     }
     public void deleteAuth(String authToken) throws DataAccessException {
@@ -58,7 +58,7 @@ public class DatabaseAuthDao implements AuthDao {
             preparedStatement.setString(1, authToken);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to delete auth", ex);
+            throw new DataAccessException("Error: failed to delete auth", ex);
         }
     }
 }

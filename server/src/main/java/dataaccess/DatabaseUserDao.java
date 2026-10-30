@@ -13,7 +13,7 @@ public class DatabaseUserDao implements UserDao {
             var preparedStatement = conn.prepareStatement(statement);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to clear users", ex);
+            throw new DataAccessException("Error: failed to clear users", ex);
         }
     };
     public void createUser(UserData user) throws DataAccessException {
@@ -25,7 +25,7 @@ public class DatabaseUserDao implements UserDao {
             preparedStatement.setString(3, user.email());
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to create user", ex);
+            throw new DataAccessException("Error: failed to create user", ex);
         }
     };
     public UserData getUser(String username) throws DataAccessException {
@@ -42,7 +42,7 @@ public class DatabaseUserDao implements UserDao {
                 return null;
             }
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to get user", ex);
+            throw new DataAccessException("Error: failed to get user", ex);
         }
     };
 }

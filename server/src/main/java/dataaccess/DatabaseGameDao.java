@@ -18,7 +18,7 @@ public class DatabaseGameDao implements GameDao {
             var preparedStatement = conn.prepareStatement(statement);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to clear games", ex);
+            throw new DataAccessException("Error: failed to clear games", ex);
         }
     }
     public GameData createGame(String whiteUsername, String blackUsername, String gameName, ChessGame game) throws DataAccessException {
@@ -36,7 +36,7 @@ public class DatabaseGameDao implements GameDao {
             int generatedId = generatedKeys.getInt(1);
             return getGame(generatedId);
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to create game", ex);
+            throw new DataAccessException("Error: failed to create game", ex);
         }
     }
     public GameData getGame(int gameID) throws DataAccessException {
@@ -53,7 +53,7 @@ public class DatabaseGameDao implements GameDao {
             var game = new Gson().fromJson(gameString, ChessGame.class);
             return new GameData(gameID,whiteUsername,blackUsername,gameName,game);
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to get game", ex);
+            throw new DataAccessException("Error: failed to get game", ex);
         }
     }
     public List<GameData> listGames() throws DataAccessException {
@@ -74,7 +74,7 @@ public class DatabaseGameDao implements GameDao {
             }
             return games;
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to get list of games", ex);
+            throw new DataAccessException("Error: failed to get list of games", ex);
         }
     }
     public void updateGame(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) throws DataAccessException {
@@ -89,7 +89,7 @@ public class DatabaseGameDao implements GameDao {
             preparedStatement.setInt(5,gameID);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to update game", ex);
+            throw new DataAccessException("Error: failed to update game", ex);
         }
     }
 }
