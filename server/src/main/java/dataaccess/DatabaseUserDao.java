@@ -34,10 +34,13 @@ public class DatabaseUserDao implements UserDao {
             var preparedStatement = conn.prepareStatement(statement);
             preparedStatement.setString(1, username);
             var rs = preparedStatement.executeQuery();
-            rs.next();
-            var password = rs.getString("password");
-            var email = rs.getString("email");
-            return new UserData(username,password,email);
+            if (rs.next()) {
+                var password = rs.getString("password");
+                var email = rs.getString("email");
+                return new UserData(username,password,email);
+            } else {
+                return null;
+            }
         } catch (SQLException ex) {
             throw new DataAccessException("failed to get user", ex);
         }
