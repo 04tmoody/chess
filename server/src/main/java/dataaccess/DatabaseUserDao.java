@@ -16,11 +16,30 @@ public class DatabaseUserDao implements UserDao {
             throw new DataAccessException("failed to clear users", ex);
         }
     };
-    public void createUser(UserData user) {
-        //users.put(user.username(),user);
+    public void createUser(UserData user) throws DataAccessException {
+        var statement = "INSERT INTO users (username, password, email) VALUES(?, ?, ?)";
+        try (var conn = DatabaseManager.getConnection()) {
+            var preparedStatement = conn.prepareStatement(statement);
+            preparedStatement.setString(1, user.username());
+            preparedStatement.setString(2, user.password());
+            preparedStatement.setString(3, user.email());
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DataAccessException("failed to create user", ex);
+        }
     };
-    public UserData getUser(String username) {
-        //return users.get(username);
-        return null;
+    public UserData getUser(String username) throws DataAccessException {
+        var statement = "SELECT * FROM users WHERE username = ?";
+        try (var conn = DatabaseManager.getConnection()) {
+            var preparedStatement = conn.prepareStatement(statement);
+            preparedStatement.setString(1, username);
+            var rs = preparedStatement.executeQuery();
+            rs.next();
+            var password = rs.getString("password");
+            var email = rs.getString("email");
+            return new UserData(username,password,email);
+        } catch (SQLException ex) {
+            throw new DataAccessException("failed to create user", ex);
+        }
     };
 }
