@@ -1,6 +1,8 @@
 package server;
 
 import com.google.gson.Gson;
+import dataaccess.DataAccessException;
+import dataaccess.DatabaseManager;
 import io.javalin.*;
 import io.javalin.http.Context;
 import model.UserData;
@@ -18,6 +20,14 @@ public class Server {
     private final Javalin javalin;
 
     public Server() {
+
+        try {
+            DatabaseManager.createDatabase();
+            DatabaseManager.createTables();
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Failed to initialize database: " + e.getMessage(),e);
+        }
+
 
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
