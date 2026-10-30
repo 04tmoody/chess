@@ -40,7 +40,7 @@ public class Server {
         javalin.put("/game",this::joinGame);
     }
 
-    private void clear(Context ctx) {
+    private void clear(Context ctx) throws DataAccessException {
         userService.clear();
         authService.clear();
         gameService.clear();
