@@ -1,11 +1,11 @@
 package service;
 
-import dataaccess.MemoryAuthDao;
+import dataaccess.DatabaseAuthDao;
 import dataaccess.AuthDao;
 import model.AuthData;
 
 public class AuthService {
-    private final AuthDao authDao = new MemoryAuthDao();
+    private final AuthDao authDao = new DatabaseAuthDao();
 
     public void clear() {
         authDao.clear();

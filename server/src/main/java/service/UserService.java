@@ -2,7 +2,7 @@ package service;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
-import dataaccess.MemoryUserDao;
+import dataaccess.DatabaseUserDao;
 import dataaccess.UserDao;
 import model.AuthData;
 import model.UserData;
@@ -12,7 +12,7 @@ import model.result.*;
 import java.util.Map;
 
 public class UserService {
-    private final UserDao userDao = new MemoryUserDao();
+    private final UserDao userDao = new DatabaseUserDao();
     private final AuthService authService;
 
     public UserService(AuthService authService) {

@@ -2,14 +2,14 @@ package service;
 
 import chess.ChessGame;
 import dataaccess.GameDao;
-import dataaccess.MemoryGameDao;
+import dataaccess.DatabaseGameDao;
 import model.GameData;
 import model.request.CreateGameRequest;
 import model.request.JoinGameRequest;
 import model.result.*;
 
 public class GameService {
-    private final GameDao gameDao = new MemoryGameDao();
+    private final GameDao gameDao = new DatabaseGameDao();
     private final AuthService authService;
 
     public GameService(AuthService authService) {
