@@ -156,7 +156,7 @@ public class ChessClient {
 
     private void logout() {
         try {
-            server.logout();
+            server.logout(auth);
             System.out.println("You have successfully logged out!");
             loggedIn = false;
             user = null;
@@ -217,7 +217,8 @@ public class ChessClient {
                 int game = Integer.parseInt(gameInput);
                 if (game>games.size() || game<1) throw new Exception();
                 int gameID = games.get(game-1).gameID();
-                server.joinGame(gameID);
+                //server.joinGame(gameID);
+                System.out.println("Joined Game!");
             } catch (Exception ex) {
                 System.out.printf("Game #%s could not be found. Try a number from 1-%d",gameInput,games.size());
             }
