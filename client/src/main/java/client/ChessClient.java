@@ -217,10 +217,23 @@ public class ChessClient {
                 int game = Integer.parseInt(gameInput);
                 if (game>games.size() || game<1) throw new Exception();
                 int gameID = games.get(game-1).gameID();
-                //server.joinGame(gameID);
+                boolean whiteTaken = games.get(game-1).whiteUsername()!=null;
+                boolean blackTaken = games.get(game-1).blackUsername()!=null;
+                ChessGame.TeamColor color = null;
+                if (whiteTaken && blackTaken) {
+                    System.out.println("Game #"+gameInput+" is full. Try a different game.");
+                    return;
+                } else if (!whiteTaken && !blackTaken) {
+                    System.out.print("Enter your color (White/Black): ");
+                    char colorChar = (scanner.nextLine()+" ").toLowerCase(Locale.ROOT).charAt(0);
+                    color = colorChar=='w' ? ChessGame.TeamColor.WHITE : ChessGame.TeamColor.BLACK;
+                } else {
+                    color = blackTaken ? ChessGame.TeamColor.WHITE : ChessGame.TeamColor.BLACK;
+                }
+                //server.joinGame(gameID,color);
                 System.out.println("Joined Game!");
             } catch (Exception ex) {
-                System.out.printf("Game #%s could not be found. Try a number from 1-%d",gameInput,games.size());
+                System.out.printf("Game #%s could not be found. Try a number from 1-%d\n",gameInput,games.size());
             }
         } catch (Exception ex) {
             System.out.println("Hmmm... Something went wrong finding games to play. Try again later.");
