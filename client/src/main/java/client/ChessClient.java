@@ -81,7 +81,7 @@ public class ChessClient {
                 playGame(scanner);
             }
             case "observe game" -> {
-
+                observeGame(scanner);
             }
             case "quit", "login", "register" -> {
                 System.out.println("You must logout first before you can use that command. Type 'logout' to do so!");
@@ -245,5 +245,23 @@ public class ChessClient {
             System.out.println("Hmmm... Something went wrong finding games to play. Try again later.");
         }
     }
-    
+
+    private void observeGame(Scanner scanner) {
+        try {
+            List<GameData> games = server.listGames(auth);
+            System.out.println("Which game would you like to join? (Use 'list games' to see all game options)");
+            System.out.print("Game #: ");
+            String gameInput = scanner.nextLine();
+            try {
+                int game = Integer.parseInt(gameInput);
+                if (game>games.size() || game<1) throw new Exception();
+                int gameID = games.get(game-1).gameID();
+                System.out.println("Observing Game '"+games.get(game-1).gameName()+ "'!");
+            } catch (Exception ex) {
+                System.out.printf("Game #%s could not be found. Try a number from 1-%d\n",gameInput,games.size());
+            }
+        } catch (Exception ex) {
+            System.out.println("Hmmm... Something went wrong finding games to play. Try again later.");
+        }
+    }
 }
