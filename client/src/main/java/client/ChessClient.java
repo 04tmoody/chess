@@ -31,22 +31,22 @@ public class ChessClient {
                 System.out.print(">>> ");
                 String command = scanner.nextLine().toLowerCase(Locale.ROOT);
                 if (loggedIn) {
-                    postloginCommand(scanner, command);
+                    postLoginCommand(scanner, command);
                 } else {
-                    preloginCommand(scanner, command);
+                    preLoginCommand(scanner, command);
                 }
             }
         }
     }
 
-    private void preloginCommand(Scanner scanner, String command) {
+    private void preLoginCommand(Scanner scanner, String command) {
         switch (command) {
             case "quit" -> {
                 System.out.println("Thanks for playing chess. Goodbye!");
                 finished = true;
             }
             case "help" -> {
-                preloginHelp();
+                preLoginHelp();
             }
             case "login" -> {
                 login(scanner);
@@ -63,10 +63,10 @@ public class ChessClient {
         }
     }
 
-    private void postloginCommand(Scanner scanner, String command) {
+    private void postLoginCommand(Scanner scanner, String command) {
         switch (command) {
             case "help" -> {
-                postloginHelp();
+                postLoginHelp();
             }
             case "logout" -> {
                 logout();
@@ -78,7 +78,7 @@ public class ChessClient {
                 listGames();
             }
             case "play game" -> {
-
+                playGame(scanner);
             }
             case "observe game" -> {
 
@@ -92,7 +92,7 @@ public class ChessClient {
         }
     }
 
-    private void preloginHelp() {
+    private void preLoginHelp() {
         System.out.println("To get started, type one of the following commands:\n"+
                 "\t'help' - print out these instructions\n"+
                 "\t'quit' - end the program ):\n"+
@@ -100,7 +100,7 @@ public class ChessClient {
                 "\t'register' - create an account if you don't have one yet");
     }
 
-    private void postloginHelp() {
+    private void postLoginHelp() {
         System.out.println("To get started, type one of the following commands:\n"+
                 "\t'help' - print out these instructions\n"+
                 "\t'logout' - log out of your account\n"+
@@ -181,6 +181,9 @@ public class ChessClient {
     private void listGames() {
         try {
             List<GameData> games = server.listGames(auth);
+            if (games.isEmpty()) {
+                System.out.println("No games yet... type 'create game' to make one.");
+            }
             System.out.println("Here are all current chess games:");
             int i = 0;
             for (GameData game: games) {
@@ -204,5 +207,23 @@ public class ChessClient {
         }
     }
 
-
+    private void playGame(Scanner scanner) {
+        try {
+            List<GameData> games = server.listGames(auth);
+            System.out.println("Which game would you like to join? (Use 'list games' to see all game options)");
+            System.out.print("Game #: ");
+            String gameInput = scanner.nextLine();
+            try {
+                int game = Integer.parseInt(gameInput);
+                if (game>games.size() || game<1) throw new Exception();
+                int gameID = games.get(game-1).gameID();
+                server.joinGame(gameID);
+            } catch (Exception ex) {
+                System.out.printf("Game #%s could not be found. Try a number from 1-%d",gameInput,games.size());
+            }
+        } catch (Exception ex) {
+            System.out.println("Hmmm... Something went wrong finding games to play. Try again later.");
+        }
+    }
+    
 }
