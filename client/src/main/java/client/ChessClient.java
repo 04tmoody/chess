@@ -202,8 +202,12 @@ public class ChessClient {
                 if (white==null && black==null) {
                     System.out.println("\t ┕ (no players joined)");
                 } else {
-                    if (white==null) white = "(not joined)";
-                    if (black==null) black = "(not joined)";
+                    if (white==null) {
+                        white = "(not joined)";
+                    }
+                    if (black==null) {
+                        black = "(not joined)";
+                    }
                     System.out.printf("\t ┣ White Player: %s\n",white);
                     System.out.printf("\t ┕ Black Player: %s\n",black);
                 }
@@ -222,7 +226,9 @@ public class ChessClient {
             String gameInput = scanner.nextLine();
             try {
                 int game = Integer.parseInt(gameInput);
-                if (game>games.size() || game<1) throw new Exception();
+                if (game>games.size() || game<1) {
+                    throw new Exception();
+                }
                 int gameID = games.get(game-1).gameID();
                 boolean whiteTaken = games.get(game-1).whiteUsername()!=null;
                 boolean blackTaken = games.get(game-1).blackUsername()!=null;
@@ -233,8 +239,12 @@ public class ChessClient {
                 } else if (!whiteTaken && !blackTaken) {
                     System.out.print("Enter your color (White/Black): ");
                     char colorChar = (scanner.nextLine()+" ").toLowerCase(Locale.ROOT).charAt(0);
-                    if (colorChar=='w') color = "WHITE";
-                    else if (colorChar=='b') color = "BLACK";
+                    if (colorChar=='w') {
+                        color = "WHITE";
+                    }
+                    else if (colorChar=='b') {
+                        color = "BLACK";
+                    }
                     else {
                         System.out.println("Unknown color. Failed to join game.");
                         return;
@@ -263,7 +273,9 @@ public class ChessClient {
             String gameInput = scanner.nextLine();
             try {
                 int game = Integer.parseInt(gameInput);
-                if (game>games.size() || game<1) throw new Exception();
+                if (game>games.size() || game<1) {
+                    throw new Exception();
+                }
                 int gameID = games.get(game-1).gameID();
                 System.out.println("Observing Game '"+games.get(game-1).gameName()+ "'!");
                 ChessGame myGame = games.get(game-1).game();

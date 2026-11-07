@@ -113,7 +113,9 @@ public class ServerFacadeTests {
         assertDoesNotThrow(() -> {
             int id = 0;
             for (GameData game:games) {
-                if (game.gameName().equals(newGameName)) id=game.gameID();
+                if (game.gameName().equals(newGameName)) {
+                    id=game.gameID();
+                }
             }
             sf.joinGame(id,"WHITE",auth);
         });

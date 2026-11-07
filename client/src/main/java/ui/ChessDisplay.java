@@ -55,7 +55,9 @@ public class ChessDisplay {
     public void displayBoard(ChessBoard board, boolean flipped) {
 
         List<String> columns = List.of("a","b","c","d","e","f","g","h");
-        if (flipped) columns = List.of("h","g","f","e","d","c","b","a");
+        if (flipped) {
+            columns = List.of("h","g","f","e","d","c","b","a");
+        }
         System.out.print(resetColor+"  "+labelColor);
         columns.forEach(letter -> System.out.print(" "+letter+"\u2003"));
         System.out.println("  "+resetColor);
@@ -74,8 +76,12 @@ public class ChessDisplay {
                     icon = (piece.getTeamColor() == WHITE ? whitePieceColor : blackPieceColor) + icon;
                 }
                 icon = icon + RESET_TEXT_COLOR;
-                if ((row+col)%2==1) System.out.print(lightColor);
-                else System.out.print(darkColor);
+                if ((row+col)%2==1) {
+                    System.out.print(lightColor);
+                }
+                else {
+                    System.out.print(darkColor);
+                }
                 System.out.printf(" %s ",icon);
                 System.out.print(resetColor);
             }
