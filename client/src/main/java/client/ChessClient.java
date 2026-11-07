@@ -31,13 +31,14 @@ public class ChessClient {
         System.out.println("Welcome to Chess240!");
         try (Scanner scanner = new Scanner(System.in)) {
             while (!finished) {
-                System.out.print("\n>>> ");
+                System.out.print((loggedIn ? "["+user+"]" : "[Unknown User]")+" >>> ");
                 String command = scanner.nextLine().toLowerCase(Locale.ROOT);
                 if (loggedIn) {
                     postLoginCommand(scanner, command);
                 } else {
                     preLoginCommand(scanner, command);
                 }
+                System.out.println();
             }
         }
     }
@@ -57,7 +58,7 @@ public class ChessClient {
             case "register" -> {
                 register(scanner);
             }
-            case "logout", "create game", "list games", "play game", "observe game" -> {
+            case "logout", "create game", "list games", "play game", "observe game", "settings" -> {
                 System.out.println("You must login first before you can use that command. Type 'login' to do so!");
             }
             default -> {
@@ -85,6 +86,9 @@ public class ChessClient {
             }
             case "observe game" -> {
                 observeGame(scanner);
+            }
+            case "settings" -> {
+                changeSettings(scanner);
             }
             case "quit", "login", "register" -> {
                 System.out.println("You must logout first before you can use that command. Type 'logout' to do so!");
@@ -269,6 +273,23 @@ public class ChessClient {
             }
         } catch (Exception ex) {
             System.out.println("Hmmm... Something went wrong finding games to play. Try again later.");
+        }
+    }
+
+    private void changeSettings(Scanner scanner) {
+        System.out.println("Board Color Schemes:");
+        System.out.println("  1. Sandcastle (Default)");
+        System.out.println("  2. Coral");
+        System.out.println("  3. Dusk");
+        System.out.println("  4. Marine");
+        System.out.println("  5. Wheat");
+        System.out.print("Choose your color scheme (1-5): ");
+        String scheme = scanner.nextLine();
+        try {
+            display.setColorScheme(Integer.parseInt(scheme));
+            System.out.println("Switched to Color Scheme "+scheme+"!");
+        } catch (Exception ex) {
+            System.out.println("Hmmm... I don't know that color scheme. Sorry!");
         }
     }
 }

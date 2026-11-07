@@ -95,26 +95,30 @@ public class ChessDisplay {
     }
 
     public void setColorScheme(int scheme) throws Exception {
+        whitePieceColor = setColor(true,255,230,205);
+        blackPieceColor = setColor(true,50,25,0);
         switch (scheme) {
             case 1 -> { // Sandcastle
-                whitePieceColor = setColor(true,255,230,205);
-                blackPieceColor = setColor(true,50,25,0);
+                lightColor = setColor(false,207,173,91);
+                darkColor = setColor(false,164,119,54);
             }
             case 2 -> { // Coral
-                whitePieceColor = setColor(true,177,228,185);
-                blackPieceColor = setColor(true,112,162,163);
+                lightColor = setColor(false,177,228,185);
+                darkColor = setColor(false,112,162,163);
+                whitePieceColor = setColor(true,105,80,55);
             }
             case 3 -> { // Dusk
-                whitePieceColor = setColor(true,204,183,174);
-                blackPieceColor = setColor(true,112,102,119);
+                lightColor = setColor(false,164,143,134);
+                darkColor = setColor(false,112,102,119);
             }
             case 4 -> { // Marine
-                whitePieceColor = setColor(true,157,172,255);
-                blackPieceColor = setColor(true,111,115,210);
+                lightColor = setColor(false,157,172,255);
+                darkColor = setColor(false,111,115,210);
             }
             case 5 -> { // Wheat
-                whitePieceColor = setColor(true,234,240,206);
-                blackPieceColor = setColor(true,187,190,100);
+                lightColor = setColor(false,234,240,206);
+                darkColor = setColor(false,187,190,100);
+                whitePieceColor = setColor(true,105,80,55);
             }
             default -> {
                 throw new Exception("Invalid Color Scheme (1-5)");
