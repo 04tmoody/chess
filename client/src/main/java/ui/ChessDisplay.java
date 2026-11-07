@@ -44,12 +44,12 @@ public class ChessDisplay {
         blackIcons.put(KING,"♚");
         blackIcons.put(PAWN,"♟");
 
-        whitePieceColor = SET_TEXT_COLOR_WHITE;
-        blackPieceColor = SET_TEXT_COLOR_BLACK;
+        whitePieceColor = setColor(true,255,230,205);//SET_TEXT_COLOR_WHITE;
+        blackPieceColor = setColor(true,50,25,0);//SET_TEXT_COLOR_BLACK;
 
         labelColor = SET_TEXT_COLOR_LIGHT_GREY;
-        lightColor = setColor(false,227,193,111);//SET_BG_COLOR_LIGHT_GREY;
-        darkColor = setColor(false,184,139,74);//SET_BG_COLOR_DARK_GREY;
+        lightColor = setColor(false,207,173,91);//SET_BG_COLOR_LIGHT_GREY;
+        darkColor = setColor(false,164,119,54);//SET_BG_COLOR_DARK_GREY;
         resetColor = RESET_BG_COLOR + RESET_TEXT_COLOR;
 
         lightTextColor = lightColor.replace("[4","[3");
@@ -59,13 +59,16 @@ public class ChessDisplay {
     public void displayBoard(ChessBoard board, boolean flipped) {
 
         List<String> columns = List.of("a","b","c","d","e","f","g","h");
+        if (flipped) columns = List.of("h","g","f","e","d","c","b","a");
         final String pieceGap = SET_TEXT_COLOR_DARK_GREY+whiteIcons.get(PAWN);
         System.out.print(SET_BG_COLOR_DARK_GREY+"  ");
         columns.forEach(letter -> System.out.print(labelColor+" "+letter+pieceGap));
         System.out.println("  "+resetColor);
-        for (int row=8; row>=1; row--) {
+        for (int row_i=8; row_i>=1; row_i--) {
+            int row = flipped ? 9-row_i : row_i;
             System.out.print(SET_BG_COLOR_DARK_GREY+labelColor+row+" "+resetColor);
-            for (int col=1; col<=8; col++) {
+            for (int col_i=1; col_i<=8; col_i++) {
+                int col = flipped ? 9-col_i : col_i;
                 ChessPiece piece = board.getPiece(new ChessPosition(row,col));
                 String icon;
                 if (piece==null) {
@@ -100,5 +103,6 @@ public class ChessDisplay {
         ChessGame game = new ChessGame();
         ChessDisplay display = new ChessDisplay();
         display.displayBoard(game.getBoard(),false);
+        display.displayBoard(game.getBoard(),true);
     }
 }
