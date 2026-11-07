@@ -61,7 +61,7 @@ public class ChessDisplay {
         System.out.println("  "+resetColor);
         for (int row_i=8; row_i>=1; row_i--) {
             int row = flipped ? 9-row_i : row_i;
-            System.out.print(SET_BG_COLOR_DARK_GREY+labelColor+row+" "+resetColor);
+            System.out.print(labelColor+row+" "+resetColor);
             for (int col_i=1; col_i<=8; col_i++) {
                 int col = flipped ? 9-col_i : col_i;
                 ChessPiece piece = board.getPiece(new ChessPosition(row,col));
@@ -79,7 +79,7 @@ public class ChessDisplay {
                 System.out.printf(" %s ",icon);
                 System.out.print(resetColor);
             }
-            System.out.print(SET_BG_COLOR_DARK_GREY+labelColor+" "+row+resetColor);
+            System.out.print(labelColor+" "+row+resetColor);
             System.out.println();
         }
         System.out.print(resetColor+"  "+labelColor);
