@@ -24,8 +24,6 @@ public class ChessDisplay {
     String labelColor;
     String whitePieceColor;
     String blackPieceColor;
-    String lightTextColor;
-    String darkTextColor;
 
     public ChessDisplay() {
         whiteIcons = new HashMap<>();
@@ -52,17 +50,14 @@ public class ChessDisplay {
         darkColor = setColor(false,164,119,54);//SET_BG_COLOR_DARK_GREY;
         resetColor = RESET_BG_COLOR + RESET_TEXT_COLOR;
 
-        lightTextColor = lightColor.replace("[4","[3");
-        darkTextColor = darkColor.replace("[4","[3");
     }
 
     public void displayBoard(ChessBoard board, boolean flipped) {
 
         List<String> columns = List.of("a","b","c","d","e","f","g","h");
         if (flipped) columns = List.of("h","g","f","e","d","c","b","a");
-        final String pieceGap = SET_TEXT_COLOR_DARK_GREY+whiteIcons.get(PAWN);
-        System.out.print(SET_BG_COLOR_DARK_GREY+"  ");
-        columns.forEach(letter -> System.out.print(labelColor+" "+letter+pieceGap));
+        System.out.print(resetColor+"  "+labelColor);
+        columns.forEach(letter -> System.out.print(" "+letter+"\u2003"));
         System.out.println("  "+resetColor);
         for (int row_i=8; row_i>=1; row_i--) {
             int row = flipped ? 9-row_i : row_i;
@@ -72,23 +67,23 @@ public class ChessDisplay {
                 ChessPiece piece = board.getPiece(new ChessPosition(row,col));
                 String icon;
                 if (piece==null) {
-                    icon = whiteIcons.get(PAWN);
+                    icon = "\u2003";
                 } else {
                     Map<PieceType,String> icons = piece.getTeamColor() == WHITE ? whiteIcons : blackIcons;
                     icon = icons.get(piece.getPieceType());
                     icon = (piece.getTeamColor() == WHITE ? whitePieceColor : blackPieceColor) + icon;
                 }
                 icon = icon + RESET_TEXT_COLOR;
-                if ((row+col)%2==1) System.out.print(lightColor+lightTextColor);
-                else System.out.print(darkColor+darkTextColor);
+                if ((row+col)%2==1) System.out.print(lightColor);
+                else System.out.print(darkColor);
                 System.out.printf(" %s ",icon);
                 System.out.print(resetColor);
             }
             System.out.print(SET_BG_COLOR_DARK_GREY+labelColor+" "+row+resetColor);
             System.out.println();
         }
-        System.out.print(SET_BG_COLOR_DARK_GREY+"  ");
-        columns.forEach(letter -> System.out.print(labelColor+" "+letter+pieceGap));
+        System.out.print(resetColor+"  "+labelColor);
+        columns.forEach(letter -> System.out.print(" "+letter+"\u2003"));
         System.out.println("  "+resetColor);
     }
 
