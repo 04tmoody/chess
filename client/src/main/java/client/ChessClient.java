@@ -8,6 +8,7 @@ import java.util.Scanner;
 import client.ServerFacade;
 import model.AuthData;
 import model.GameData;
+import ui.ChessDisplay;
 
 import static ui.EscapeSequences.*;
 
@@ -18,9 +19,11 @@ public class ChessClient {
     private String auth = null;
     private String user = null;
     private boolean finished;
+    private final ChessDisplay display;
 
     public ChessClient(String serverUrl) {
         server = new ServerFacade(serverUrl);
+        display = new ChessDisplay();
     }
 
     public void run() {
@@ -28,7 +31,7 @@ public class ChessClient {
         System.out.println("Welcome to Chess240!");
         try (Scanner scanner = new Scanner(System.in)) {
             while (!finished) {
-                System.out.print(">>> ");
+                System.out.print("\n>>> ");
                 String command = scanner.nextLine().toLowerCase(Locale.ROOT);
                 if (loggedIn) {
                     postLoginCommand(scanner, command);
@@ -123,10 +126,10 @@ public class ChessClient {
             loggedIn = true;
             System.out.println("Welcome "+username+"!");
         } catch (Exception ex) {
-            if (ex.getMessage().contains("unauthorized")) {
+            if (ex.getMessage()!=null && ex.getMessage().contains("unauthorized")) {
                 System.out.println("That password is incorrect or that username doesn't exist. Type 'login' to try again!");
             } else {
-                System.out.println("Hmmm... something went wrong registering. Try again later!");
+                System.out.println("Hmmm... something went wrong logging in. Try again later!");
             }
         }
     }
@@ -146,7 +149,7 @@ public class ChessClient {
             loggedIn = true;
             System.out.println("Account Registered! Welcome "+username);
         } catch (Exception ex) {
-            if (ex.getMessage().contains("already taken")) {
+            if (ex.getMessage()!=null && ex.getMessage().contains("already taken")) {
                 System.out.println("That username is already taken! Type 'register' to try again.");
             } else {
                 System.out.println("Hmmm... something went wrong registering. Try again later!");
@@ -238,6 +241,8 @@ public class ChessClient {
                 server.joinGame(gameID,color,auth);
                 System.out.println("Joined Game '"+games.get(game-1).gameName()+
                                     "' as "+color.toUpperCase(Locale.ROOT)+"!");
+                ChessGame myGame = games.get(game-1).game();
+                display.displayBoard(myGame.getBoard(),color.equals("BLACK"));
             } catch (Exception ex) {
                 System.out.printf("Game #%s could not be found. Try a number from 1-%d\n",gameInput,games.size());
             }
@@ -257,6 +262,8 @@ public class ChessClient {
                 if (game>games.size() || game<1) throw new Exception();
                 int gameID = games.get(game-1).gameID();
                 System.out.println("Observing Game '"+games.get(game-1).gameName()+ "'!");
+                ChessGame myGame = games.get(game-1).game();
+                display.displayBoard(myGame.getBoard(),false);
             } catch (Exception ex) {
                 System.out.printf("Game #%s could not be found. Try a number from 1-%d\n",gameInput,games.size());
             }
