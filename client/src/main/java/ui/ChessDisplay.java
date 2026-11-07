@@ -24,6 +24,8 @@ public class ChessDisplay {
     String labelColor;
     String whitePieceColor;
     String blackPieceColor;
+    String lightTextColor;
+    String darkTextColor;
 
     public ChessDisplay() {
         whiteIcons = new HashMap<>();
@@ -49,6 +51,9 @@ public class ChessDisplay {
         lightColor = SET_BG_COLOR_LIGHT_GREY;
         darkColor = SET_BG_COLOR_DARK_GREY;
         resetColor = RESET_BG_COLOR + RESET_TEXT_COLOR;
+
+        lightTextColor = lightColor.replace(SET_BG_COLOR,SET_TEXT_COLOR);
+        darkTextColor = darkColor.replace(SET_BG_COLOR,SET_TEXT_COLOR);
     }
 
     public void displayBoard(ChessBoard board, Size size, boolean flipped) {
@@ -76,14 +81,14 @@ public class ChessDisplay {
                 ChessPiece piece = board.getPiece(new ChessPosition(row,col));
                 String icon;
                 if (piece==null) {
-                    icon = " ";
+                    icon = whiteIcons.get(PAWN);
                 } else {
                     Map<PieceType,String> icons = piece.getTeamColor() == WHITE ? whiteIcons : blackIcons;
                     icon = icons.get(piece.getPieceType());
                     icon = (piece.getTeamColor() == WHITE ? whitePieceColor : blackPieceColor) + icon;
                 }
-                if ((row+col)%2==1) System.out.print(lightColor);
-                else System.out.print(darkColor);
+                if ((row+col)%2==1) System.out.print(lightColor+lightTextColor);
+                else System.out.print(darkColor+darkTextColor);
                 if (size==Size.LARGE) System.out.printf("║  %s  ║",icon);
                 if (size==Size.MEDIUM) System.out.printf(" %s ",icon);
                 if (size==Size.SMALL) System.out.printf("%s",icon);
