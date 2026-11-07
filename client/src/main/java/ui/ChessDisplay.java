@@ -59,12 +59,12 @@ public class ChessDisplay {
     public void displayBoard(ChessBoard board, boolean flipped) {
 
         List<String> columns = List.of("a","b","c","d","e","f","g","h");
-        final String gap = " ";
-        System.out.print("  "+labelColor);
-        columns.forEach(letter -> System.out.print(gap+letter+gap));
-        System.out.println(resetColor);
+        final String pieceGap = SET_TEXT_COLOR_DARK_GREY+whiteIcons.get(PAWN);
+        System.out.print(SET_BG_COLOR_DARK_GREY+"  ");
+        columns.forEach(letter -> System.out.print(labelColor+" "+letter+pieceGap));
+        System.out.println("  "+resetColor);
         for (int row=8; row>=1; row--) {
-            System.out.print(labelColor+row+" "+resetColor);
+            System.out.print(SET_BG_COLOR_DARK_GREY+labelColor+row+" "+resetColor);
             for (int col=1; col<=8; col++) {
                 ChessPiece piece = board.getPiece(new ChessPosition(row,col));
                 String icon;
@@ -81,12 +81,12 @@ public class ChessDisplay {
                 System.out.printf(" %s ",icon);
                 System.out.print(resetColor);
             }
-            System.out.print(labelColor+" "+row+resetColor);
+            System.out.print(SET_BG_COLOR_DARK_GREY+labelColor+" "+row+resetColor);
             System.out.println();
         }
-        System.out.print("  "+labelColor);
-        columns.forEach(letter -> System.out.print(gap+letter+gap));
-        System.out.println(resetColor);
+        System.out.print(SET_BG_COLOR_DARK_GREY+"  ");
+        columns.forEach(letter -> System.out.print(labelColor+" "+letter+pieceGap));
+        System.out.println("  "+resetColor);
     }
 
     private static String setColor(boolean text, int red, int green, int blue) {
