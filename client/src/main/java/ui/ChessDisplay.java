@@ -99,10 +99,31 @@ public class ChessDisplay {
         return String.format("\u001B[%s8;2;%d;%d;%dm", (text) ? "3" : "4", red, green, blue);
     }
 
-    public static void main(String[] args) {
-        ChessGame game = new ChessGame();
-        ChessDisplay display = new ChessDisplay();
-        display.displayBoard(game.getBoard(),false);
-        display.displayBoard(game.getBoard(),true);
+    public void setColorScheme(int scheme) throws Exception {
+        switch (scheme) {
+            case 1 -> { // Sandcastle
+                whitePieceColor = setColor(true,255,230,205);
+                blackPieceColor = setColor(true,50,25,0);
+            }
+            case 2 -> { // Coral
+                whitePieceColor = setColor(true,177,228,185);
+                blackPieceColor = setColor(true,112,162,163);
+            }
+            case 3 -> { // Dusk
+                whitePieceColor = setColor(true,204,183,174);
+                blackPieceColor = setColor(true,112,102,119);
+            }
+            case 4 -> { // Marine
+                whitePieceColor = setColor(true,157,172,255);
+                blackPieceColor = setColor(true,111,115,210);
+            }
+            case 5 -> { // Wheat
+                whitePieceColor = setColor(true,234,240,206);
+                blackPieceColor = setColor(true,187,190,100);
+            }
+            default -> {
+                throw new Exception("Invalid Color Scheme (1-5)");
+            }
+        }
     }
 }
